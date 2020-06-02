@@ -10,7 +10,7 @@ const circle = {
     return `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`;
   },
   direction: () => {
-    return Math.floor(Math.PI * Math.ceil(Math.random() * 2));
+    return Math.PI * (Math.random() * 2);
   },
   steps: () => {
     return Math.floor(Math.random() * 100);
@@ -37,7 +37,32 @@ const circle = {
     this.drow(newObj);
   },
 };
+const ani = {
+  started: 0,
+  go: function () {
+    ctx.clearRect(0, 0, 600, 600);
+    for (let el of circle.circlesArr) {
+      el.x += Math.cos(el.d);
+      el.y += Math.sin(el.d);
+      circle.drow(el);
+    }
+  },
+  start: function () {
+    this.started = setInterval(this.go, 20);
+  }
+};
+// function ani() {
+//   ctx.clearRect(0, 0, 600, 600);
+//   for (let el of circle.circlesArr) {
+//     el.x += Math.cos(el.d);
+//     el.y += Math.sin(el.d);
+//     circle.drow(el);
+//   };
+// };
+
 document.querySelector("canvas").onclick = (e) => {
   circle.addCircle(e.offsetX, e.offsetY);
-  console.dir(circle.circlesArr);
+  if (ani.started === 0) {
+    ani.start();
+  }
 };
